@@ -27,7 +27,8 @@ int main() {
 
         if (unit == 'e' || unit == 'E') {
             std::cout << "The energy of the transition is " << energy << " eV\n";
-        } else {
+        } 
+        else {
             energy * eVtojoules;
             std::cout << "The energy of the transition is " << energy << " J\n";
         }
