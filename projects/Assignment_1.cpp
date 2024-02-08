@@ -65,28 +65,28 @@ do // Asks for inputs
 
     double energy = calculate_energy(atomic_number, initial_quantum_number, final_quantum_number);
 
-    do // Asks for units 
-		{
-			unit = validate_input<char>("Print energy in J or eV? (J/e): ");
+  do // Asks for units 
+  {
+    unit = validate_input<char>("Print energy in J or eV? (J/e): ");
 
-			if (unit == 'e' || unit == 'E') 
-			{
-				std::cout << "The energy of the transition is " << std::setprecision(3) << energy << " eV\n";
-				break;
-			} 
-			else if (unit == 'j'|| unit == 'J')
-			{
-				energy *= evtojoules;
-				std::cout << "The energy of the transition is " << std::setprecision(3) << energy << " J\n";
-				break;
-			}
+    if (unit == 'e' || unit == 'E') 
+    {
+      std::cout << "The energy of the transition is " << std::setprecision(3) << energy << " eV\n";
+      break;
+    } 
+    else if (unit == 'j'|| unit == 'J')
+    {
+      energy *= evtojoules;
+      std::cout << "The energy of the transition is " << std::setprecision(3) << energy << " J\n";
+      break;
+    }
 
-			else 
-			{
-				std::cout << "Invalid input. Please enter a valid value.\n";
-			}
-		} 
-		while (true);
+    else 
+    {
+      std::cout << "Invalid input. Please enter a valid value.\n";
+    }
+  } 
+  while (true);
 
     do // Asks if user wants to repeat
     {
