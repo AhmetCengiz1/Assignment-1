@@ -47,6 +47,7 @@
         "cstring": "cpp",
         "list": "cpp",
         "map": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "iomanip": "cpp"
     }
 }

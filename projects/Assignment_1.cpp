@@ -1,12 +1,12 @@
-// The Bohr atom
+// The Bohr atom - Assignment 1
 // This code takes user inputs for the atomic number, initial and final 
 // principal quantum number values for the initial and final state of an electrons 
 // energy transition, then it outputs the energy of the transition in Joules or eV.
-// Student ID: 10932388, 08/02/2024
+// Student ID: 10932388, d52799ac, 08/02/2024
 
 #include <iostream>
-#include <limits>
 #include <cmath>
+#include <iomanip>
 
 const double evtojoules = 1.602e-19; // Electron volt constant
 
@@ -42,40 +42,53 @@ double calculate_energy(int atomic_number, int initial_quantum_number, int final
 
 int main() 
 {
+  //Initialise variables
   int atomic_number, initial_quantum_number, final_quantum_number;
   char unit, repeat;
 
+do // Asks for inputs
+{
+  atomic_number = validate_input<int>("Enter the atomic number: ");
   do 
   {
-    atomic_number = validate_input<int>("Enter the atomic number: ");
     initial_quantum_number = validate_input<int>("Enter the initial quantum number: ");
     final_quantum_number = validate_input<int>("Enter the final quantum number: ");
+    if(initial_quantum_number <= final_quantum_number)
+    {
+      std::cout << "Initial quantum number must be greater than the final quantum number. Please enter again.\n";
+    }
+    else
+    {
+      break;
+    }
+  } while(true);
 
     double energy = calculate_energy(atomic_number, initial_quantum_number, final_quantum_number);
 
-    do 
-    {
-      unit = validate_input<char>("Print energy in J or eV? (J/e): ");
+    do // Asks for units 
+		{
+			unit = validate_input<char>("Print energy in J or eV? (J/e): ");
 
-      if (unit == 'e' || unit == 'E') 
-      {
-        std::cout << "The energy of the transition is " << energy << " eV\n";
-        break;
-      } 
-      else if (unit == 'j'|| unit == 'J')
-      {
-        energy *= evtojoules;
-        std::cout << "The energy of the transition is " << energy << " J\n";
-        break;
-      }
-      else 
-      {
-        std::cout << "Invalid input. Please enter a valid value.\n";
-      }
-    } 
-    while (true);
+			if (unit == 'e' || unit == 'E') 
+			{
+				std::cout << "The energy of the transition is " << std::setprecision(3) << energy << " eV\n";
+				break;
+			} 
+			else if (unit == 'j'|| unit == 'J')
+			{
+				energy *= evtojoules;
+				std::cout << "The energy of the transition is " << std::setprecision(3) << energy << " J\n";
+				break;
+			}
 
-    do 
+			else 
+			{
+				std::cout << "Invalid input. Please enter a valid value.\n";
+			}
+		} 
+		while (true);
+
+    do // Asks if user wants to repeat
     {
       repeat = validate_input<char>("Repeat? (y/n): ");
 
@@ -85,13 +98,13 @@ int main()
       } 
       else 
       {
-        std::cout << "Invalid input. Please enter a valid value.\n";
+        std::cout << "Invalid input. Please enter a valid value. \n";
       }
     } 
-    while (true);
+    while (true); // Loops until there is a valid input 
 
   } 
-  while (repeat == 'y' || repeat == 'Y');
+  while (repeat == 'y' || repeat == 'Y'); // Loops while the repeat is still y/Y
 
   return 0;
 }
