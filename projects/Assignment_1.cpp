@@ -1,56 +1,90 @@
 #include <iostream>
+#include <limits>
+#include <cmath>
 
 const double eVtojoules = 1.602e-19; // Electron volt constant
 
-double calculateEnergy(int atomic_number, int initial_quantum_number, int final_quantum_number) {
-    return 13.6 * atomic_number * atomic_number * (1 / (initial_quantum_number * initial_quantum_number) - 1 / (final_quantum_number * final_quantum_number));
+template <typename T>
+T validate_input(const std::string& prompt)
+{
+  T value;
+  while (true) 
+  {
+    std::cout << prompt;
+    std::cin >> value;
+
+    if (std::cin.fail() || std::cin.peek() != '\n') 
+    {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Invalid input. Please enter a valid value.\n";
+    }
+
+    else 
+    {
+      break;
+    }
+  }
+  return value;
 }
 
-int main() {
-    int atomic_number, initial_quantum_number, final_quantum_number;
-    char unit, repeat;
+double calculateEnergy(int atomic_number, int initial_quantum_number, int final_quantum_number) 
+{
+  return 13.6 * (pow(atomic_number,2)) * (1.0 / pow(initial_quantum_number, 2) - 1.0 / pow(final_quantum_number,2));
+}
 
-    do {
-        std::cout << "Enter the atomic number: ";
-        std::cin >> atomic_number;
+int main() 
+{
+  int atomic_number, initial_quantum_number, final_quantum_number;
+  char unit, repeat;
 
-        std::cout << "Enter the initial quantum number: ";
-        std::cin >> initial_quantum_number;
+  do 
+  {
+    atomic_number = validate_input<int>("Enter the atomic number: ");
+    initial_quantum_number = validate_input<int>("Enter the initial quantum number: ");
+    final_quantum_number = validate_input<int>("Enter the final quantum number: ");
 
-        std::cout << "Enter the final quantum number: ";
-        std::cin >> final_quantum_number;
+    double energy = calculateEnergy(atomic_number, initial_quantum_number, final_quantum_number);
 
-        double energy = calculateEnergy(atomic_number, initial_quantum_number, final_quantum_number);
+    do 
+    {
+      unit = validate_input<char>("Print energy in J or eV? (J/e): ");
 
-        do {
-            std::cout << "Print energy in J or eV? (J/e): ";
-            std::cin >> unit;
+      if (unit == 'e' | unit == 'E') 
+      {
+        std::cout << "The energy of the transition is " << energy << " eV\n";
+        break;
+      } 
+      else if (unit == 'j'|| unit == 'J')
+      {
+        energy *= eVtojoules;
+        std::cout << "The energy of the transition is " << energy << " J\n";
+        break;
+      }
+      else 
+      {
+        std::cout << "Please enter a valid choice \n";
+      }
+    } 
+    while (true);
 
-            if (unit == 'e' || unit == 'E') {
-                std::cout << "The energy of the transition is " << energy << " eV\n";
-                break;
-            } else if (unit == 'j'|| unit == 'J'){
-                energy *= eVtojoules;
-                std::cout << "The energy of the transition is " << energy << " J\n";
-                break;
-            }
-            else {
-                std::cout << "Please enter a valid choice \n";
-            }
-        } while (true);
+    do 
+    {
+      repeat = validate_input<char>("Repeat? (y/n): ");
 
-        do {
-1            std::cout << "Repeat? (y/n): ";
-            std::cin >> repeat;
+      if (repeat == 'y' || repeat == 'Y' || repeat == 'n' || repeat == 'N') 
+      {
+        break;
+      } 
+      else 
+      {
+        std::cout << "Please enter a valid choice \n";
+      }
+    } 
+    while (true);
 
-            if (repeat == 'y' || repeat == 'Y' || repeat == 'n' || repeat == 'N') {
-                break;
-            } else {
-                std::cout << "Please enter a valid choice \n";
-            }
-        } while (true);
+  } 
+  while (repeat == 'y' || repeat == 'Y');
 
-    } while (repeat == 'y' || repeat == 'Y');
-
-    return 0;
+  return 0;
 }
